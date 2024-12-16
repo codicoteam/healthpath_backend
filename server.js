@@ -11,11 +11,11 @@ const taskRouter = require('./router/taskRouter.js');
 const medicineRouter = require('./router/medicineRouter.js'); 
 const observationRouter = require('./router/observationRouter.js'); 
 const invoiceRouter = require('./router/invoiceRouter.js'); 
+const assessmentRouter = require('./router/assessmentRouter.js'); 
+const runnerRouter = require('./router/runnnerRouter.js'); 
 
-const url = "mongodb://localhost:27017/Care_Profsional_App";
-
+const url = "mongodb+srv://ashmaptech:Eav74UplzNppU6zs@healthcarebackend.t6vwc.mongodb.net/?retryWrites=true&w=majority&appName=HealthCareBackend";
 const app = express();
-
 // MongoDB Connection
 mongoose.connect(url)
     .then(() => {
@@ -39,6 +39,8 @@ app.use('/api/v1/task_route', taskRouter);
 app.use('/api/v1/medication_route', medicineRouter);
 app.use('/api/v1/observation_route', observationRouter);
 app.use('/api/v1/invoice_route', invoiceRouter);
+app.use('/api/v1/asessment_route', assessmentRouter);
+app.use('/api/v1/runner_route', runnerRouter);
 
 const Port = 4071;
 app.listen(Port, () => {

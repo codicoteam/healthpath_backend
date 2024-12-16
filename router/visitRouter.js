@@ -36,6 +36,44 @@ router.get('/getall', authenticateToken, async (req, res) => {
     }
 });
 
+
+
+// Route to get all visits with pagination
+router.get('/getallpagination', authenticateToken, async (req, res) => {
+    try {
+        const { page = 1, limit = 10 } = req.query; // Read page and limit from query parameters
+        const paginationOptions = {
+            page: parseInt(page, 10),
+            limit: parseInt(limit, 10),
+        };
+
+        const visitsData = await visitService.getAllVisitswithPagination(
+            paginationOptions.page,
+            paginationOptions.limit
+        );
+
+        res.status(200).json({
+            message: 'Visits retrieved successfully',
+            data: visitsData.visits,
+            pagination: {
+                currentPage: visitsData.currentPage,
+                totalPages: visitsData.totalPages,
+                totalVisits: visitsData.totalVisits,
+            },
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error retrieving visits',
+            error: error.message,
+        });
+    }
+});
+
+
+
+
+
+
 // Route to fetch a visit by ID
 router.get('/get/:id', authenticateToken, async (req, res) => {
     try {

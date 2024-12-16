@@ -102,6 +102,31 @@ const getVisitsByEmployeeIdAndDate = async (careProfessionalId, DateOfVisit) => 
 };
 
 
+const getAllVisitswithPagination = async (page = 1, limit = 10) => {
+    try {
+        const skip = (page - 1) * limit; // Calculate the number of documents to skip
+        const visits = await Visit.find()
+            .populate('clientId', 'firstName lastName email')
+            .populate('careProfessionalId', 'firstName lastName email')
+            .skip(skip)
+            .limit(limit);
+
+        const totalVisits = await Visit.countDocuments(); // Get the total number of documents
+        return {
+            visits,
+            totalVisits,
+            currentPage: page,
+            totalPages: Math.ceil(totalVisits / limit),
+        };
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
+
+
+
+
 // Service to delete a visit
 const deleteVisit = async (id) => {
     try {
@@ -124,5 +149,6 @@ module.exports = {
     getVisitsByClientIdAndDate,
     getVisitsByEmployeeIdAndDate,
     getVisitsByEmployeeid,
+    getAllVisitswithPagination,
     deleteVisit,
 };
