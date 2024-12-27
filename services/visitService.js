@@ -15,8 +15,8 @@ const createVisit = async (visitData) => {
 const getAllVisits = async () => {
     try {
         const visits = await Visit.find()
-            .populate('clientId', 'firstName lastName email')
-            .populate('careProfessionalId', 'firstName lastName email');
+            .populate('clientId')
+            .populate('careProfessionalId');
         return visits;
     } catch (error) {
         throw new Error(error.message);
@@ -27,8 +27,8 @@ const getAllVisits = async () => {
 const getVisitById = async (id) => {
     try {
         const visit = await Visit.findById(id)
-            .populate('clientId', 'firstName lastName email')
-            .populate('careProfessionalId', 'firstName lastName email');
+            .populate('clientId')
+            .populate('careProfessionalId');
         if (!visit) {
             throw new Error('Visit not found');
         }
