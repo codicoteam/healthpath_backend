@@ -42,8 +42,8 @@ const getVisitById = async (id) => {
 const getVisitsByClientId = async (clientId) => {
     try {
         const visits = await Visit.find({ clientId })
-            .populate('clientId', 'firstName lastName email')
-            .populate('careProfessionalId', 'firstName email');
+            .populate('clientId')
+            .populate('careProfessionalId');
         return visits;
     } catch (error) {
         throw new Error(error.message);
@@ -54,8 +54,8 @@ const getVisitsByClientId = async (clientId) => {
 const getVisitsByEmployeeid = async (careProfessionalId) => {
     try {
         const visits = await Visit.find({ careProfessionalId })
-            .populate('clientId', 'firstName lastName email')
-            .populate('careProfessionalId', 'firstName lastName email');
+            .populate('clientId')
+            .populate('careProfessionalId');
         return visits;
     } catch (error) {
         throw new Error(error.message);
@@ -67,8 +67,8 @@ const getVisitsByEmployeeid = async (careProfessionalId) => {
 const updateVisit = async (id, updateData) => {
     try {
         const updatedVisit = await Visit.findByIdAndUpdate(id, updateData, { new: true })
-            .populate('clientId', 'firstName lastName')
-            .populate('careProfessionalId', 'firstName lastName');
+            .populate('clientId')
+            .populate('careProfessionalId');
         if (!updatedVisit) {
             throw new Error('Visit not found');
         }
@@ -82,8 +82,8 @@ const updateVisit = async (id, updateData) => {
 const getVisitsByClientIdAndDate = async (clientId, DateOfVisit) => {
     try {
         const visits = await Visit.find({ clientId, DateOfVisit })
-            .populate('clientId', 'firstName lastName email')
-            .populate('careProfessionalId', 'firstName lastName email');
+            .populate('clientId')
+            .populate('careProfessionalId');
         return visits;
     } catch (error) {
         throw new Error(error.message);
@@ -93,8 +93,8 @@ const getVisitsByClientIdAndDate = async (clientId, DateOfVisit) => {
 const getVisitsByEmployeeIdAndDate = async (careProfessionalId, DateOfVisit) => {
     try {
         const visits = await Visit.find({ careProfessionalId, DateOfVisit })
-            .populate('clientId', 'firstName lastName email')
-            .populate('careProfessionalId', 'firstName lastName email');
+            .populate('clientId')
+            .populate('careProfessionalId');
         return visits;
     } catch (error) {
         throw new Error(error.message);
@@ -106,8 +106,8 @@ const getAllVisitswithPagination = async (page = 1, limit = 10) => {
     try {
         const skip = (page - 1) * limit; // Calculate the number of documents to skip
         const visits = await Visit.find()
-            .populate('clientId', 'firstName lastName email')
-            .populate('careProfessionalId', 'firstName lastName email')
+            .populate('clientId')
+            .populate('careProfessionalId')
             .skip(skip)
             .limit(limit);
 
