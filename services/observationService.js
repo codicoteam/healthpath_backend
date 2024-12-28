@@ -15,8 +15,8 @@ const createObservation = async (observationData) => {
 const getAllObservations = async () => {
   try {
     const observations = await Observation.find()
-      .populate("visitId", "DateOfVisit startTime endTime status")
-      .populate("employeeId", "firstName lastName email");
+      .populate("visitId")
+      .populate("employeeId");
     return observations;
   } catch (error) {
     throw new Error(error.message);
@@ -27,8 +27,8 @@ const getAllObservations = async () => {
 const getObservationById = async (id) => {
   try {
     const observation = await Observation.findById(id)
-      .populate("visitId", "DateOfVisit startTime endTime status")
-      .populate("employeeId", "firstName lastName email");
+      .populate("visitId")
+      .populate("employeeId");
     if (!observation) {
       throw new Error("Observation not found");
     }
@@ -42,8 +42,8 @@ const getObservationById = async (id) => {
 const getObservationsByVisitId = async (visitId) => {
   try {
     const observations = await Observation.find({ visitId })
-      .populate("visitId", "DateOfVisit startTime endTime status")
-      .populate("employeeId", "firstName lastName email");
+      .populate("visitId")
+      .populate("employeeId");
     return observations;
   } catch (error) {
     throw new Error(error.message);
@@ -54,8 +54,8 @@ const getObservationsByVisitId = async (visitId) => {
 const getObservationsByEmployeeId = async (employeeId) => {
   try {
     const observations = await Observation.find({ employeeId })
-      .populate("visitId", "DateOfVisit startTime endTime status")
-      .populate("employeeId", "firstName lastName email");
+      .populate("visitId")
+      .populate("employeeId");
     return observations;
   } catch (error) {
     throw new Error(error.message);
@@ -70,8 +70,8 @@ const updateObservation = async (id, updateData) => {
       updateData,
       { new: true }
     )
-      .populate("visitId", "DateOfVisit startTime endTime status")
-      .populate("employeeId", "firstName lastName email");
+      .populate("visitId")
+      .populate("employeeId");
     if (!updatedObservation) {
       throw new Error("Observation not found");
     }
