@@ -15,9 +15,9 @@ const createMedication = async (medicationData) => {
 const getAllMedications = async () => {
   try {
     const medications = await Medication.find()
-      .populate("visitId", "DateOfVisit startTime endTime status")
-      .populate("clientId", "firstName lastName email")
-      .populate("prescribedBy", "firstName lastName email");
+      .populate("visitId")
+      .populate("clientId")
+      .populate("prescribedBy");
     return medications;
   } catch (error) {
     throw new Error(error.message);
@@ -28,9 +28,9 @@ const getAllMedications = async () => {
 const getMedicationById = async (id) => {
   try {
     const medication = await Medication.findById(id)
-      .populate("visitId", "DateOfVisit startTime endTime status")
-      .populate("clientId", "firstName lastName email")
-      .populate("prescribedBy", "firstName lastName email");
+      .populate("visitId")
+      .populate("clientId")
+      .populate("prescribedBy");
     if (!medication) {
       throw new Error("Medication not found");
     }
@@ -44,10 +44,9 @@ const getMedicationById = async (id) => {
 const getMedicationsByVisitId = async (visitId) => {
   try {
     const medications = await Medication.find({ visitId })
-      .populate("visitId", "DateOfVisit startTime endTime status")
-      .populate("clientId", "firstName lastName email")
-
-      .populate("prescribedBy", "firstName lastName email");
+      .populate("visitId")
+      .populate("clientId")
+      .populate("prescribedBy");
     return medications;
   } catch (error) {
     throw new Error(error.message);
@@ -58,9 +57,9 @@ const getMedicationsByVisitId = async (visitId) => {
 const getMedicationsByClientid = async (clientId) => {
   try {
     const medications = await Medication.find({ clientId })
-      .populate("visitId", "DateOfVisit startTime endTime status")
-      .populate("clientId", "firstName lastName email")
-      .populate("prescribedBy", "firstName lastName email");
+      .populate("visitId")
+      .populate("clientId")
+      .populate("prescribedBy");
     return medications;
   } catch (error) {
     throw new Error(error.message);
@@ -71,8 +70,8 @@ const getMedicationsByClientid = async (clientId) => {
 const getMedicationsByStatus = async (status) => {
   try {
     const medications = await Medication.find({ status })
-      .populate("visitId", "DateOfVisit startTime endTime status")
-      .populate("prescribedBy", "firstName lastName email");
+      .populate("visitId")
+      .populate("prescribedBy");
     return medications;
   } catch (error) {
     throw new Error(error.message);
@@ -87,8 +86,8 @@ const updateMedication = async (id, updateData) => {
       updateData,
       { new: true }
     )
-      .populate("visitId", "DateOfVisit startTime endTime status")
-      .populate("prescribedBy", "firstName lastName email");
+      .populate("visitId")
+      .populate("prescribedBy");
     if (!updatedMedication) {
       throw new Error("Medication not found");
     }
