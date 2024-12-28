@@ -26,7 +26,7 @@ router.post('/login', async (req, res) => {
         const token = jwt.sign(
             { id: employee._id, email: employee.email },
             'codicoso2023', // Replace 'your_jwt_secret' with a secure key
-            { expiresIn: '2h' }
+            { expiresIn: '8h' }
         );
 
         res.status(200).json({ message: 'Login successful', token });
@@ -45,7 +45,7 @@ router.post('/signup', async (req, res) => {
         const token = jwt.sign(
             { id: newEmployee._id, email: newEmployee.email },
             'codicoso2023', // Replace with a secure key
-            { expiresIn: '1h' } // Token validity: 1 hour
+            { expiresIn: '8h' } // Token validity: 1 hour
         );
 
         res.status(201).json({
