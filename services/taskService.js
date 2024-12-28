@@ -15,8 +15,8 @@ const createTask = async (taskData) => {
 const getAllTasks = async () => {
     try {
         const tasks = await Task.find()
-            .populate('visitId', 'DateOfVisit startTime endTime status')
-            .populate('assignedBy', 'firstName lastName email');
+            .populate('visitId')
+            .populate('assignedBy');
         return tasks;
     } catch (error) {
         throw new Error(error.message);
@@ -27,8 +27,8 @@ const getAllTasks = async () => {
 const getTaskById = async (id) => {
     try {
         const task = await Task.findById(id)
-            .populate('visitId', 'DateOfVisit startTime endTime status')
-            .populate('assignedBy', 'firstName lastName email');
+            .populate('visitId')
+            .populate('assignedBy');
         if (!task) {
             throw new Error('Task not found');
         }
@@ -42,8 +42,8 @@ const getTaskById = async (id) => {
 const getTasksByVisitId = async (visitId) => {
     try {
         const tasks = await Task.find({ visitId })
-            .populate('visitId', 'DateOfVisit startTime endTime status')
-            .populate('assignedBy', 'firstName lastName email');
+            .populate('visitId')
+            .populate('assignedBy');
         return tasks;
     } catch (error) {
         throw new Error(error.message);
@@ -54,8 +54,8 @@ const getTasksByVisitId = async (visitId) => {
 const getTasksByStatus = async (status) => {
     try {
         const tasks = await Task.find({ status })
-            .populate('visitId', 'DateOfVisit startTime endTime status')
-            .populate('assignedBy', 'firstName lastName email');
+            .populate('visitId')
+            .populate('assignedBy');
         return tasks;
     } catch (error) {
         throw new Error(error.message);
@@ -66,8 +66,8 @@ const getTasksByStatus = async (status) => {
 const updateTask = async (id, updateData) => {
     try {
         const updatedTask = await Task.findByIdAndUpdate(id, updateData, { new: true })
-            .populate('visitId', 'DateOfVisit startTime endTime status')
-            .populate('assignedBy', 'firstName lastName email');
+            .populate('visitId')
+            .populate('assignedBy');
         if (!updatedTask) {
             throw new Error('Task not found');
         }
