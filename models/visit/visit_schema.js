@@ -40,7 +40,7 @@ const visitSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ["Scheduled", "Ongoing", "Completed"],
+        enum: ["Scheduled", "Confirmed", "Ongoing", "Completed"],
         required: true,
     },
     officialVisitTime: {
