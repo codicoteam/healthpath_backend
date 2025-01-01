@@ -15,6 +15,15 @@ const assessmentSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        
+        clue: {
+            type: String,
+            required: true,
+        },
+        reason: {
+            type: String,
+            required: true,
+        },
         criteria: [
             {
                 type: Object,
