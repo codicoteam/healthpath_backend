@@ -9,6 +9,11 @@ const runnerSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+        status: {
+        type: String,
+        enum: ["Scheduled", "Ongoing", "Completed"],
+        required: true,
+    },
     employeeId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Employee",
