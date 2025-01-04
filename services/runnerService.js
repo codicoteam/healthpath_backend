@@ -19,9 +19,7 @@ const getAllRunners = async () => {
             .populate({
                 path: 'visits',
                 populate: {
-                    path: 'clientId careProfessionalId',
-                    select: 'firstName lastName email'
-                }
+                    path: 'clientId careProfessionalId'                }
             });
         return runners;
     } catch (error) {
@@ -37,9 +35,7 @@ const getRunnerById = async (id) => {
             .populate({
                 path: 'visits',
                 populate: {
-                    path: 'clientId careProfessionalId',
-                    select: 'firstName lastName email'
-                }
+                    path: 'clientId careProfessionalId'                }
             });
         if (!runner) {
             throw new Error('Runner not found');
@@ -58,9 +54,7 @@ const getRunnersByEmployeeId = async (employeeId) => {
             .populate({
                 path: 'visits',
                 populate: {
-                    path: 'clientId careProfessionalId',
-                    select: 'firstName lastName email'
-                }
+                    path: 'clientId careProfessionalId'                }
             });
         return runners;
     } catch (error) {
@@ -76,9 +70,7 @@ const updateRunner = async (id, updateData) => {
             .populate({
                 path: 'visits',
                 populate: {
-                    path: 'clientId careProfessionalId',
-                    select: 'firstName lastName email'
-                }
+                    path: 'clientId careProfessionalId'                }
             });
         if (!updatedRunner) {
             throw new Error('Runner not found');
