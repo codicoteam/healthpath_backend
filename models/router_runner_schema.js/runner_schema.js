@@ -12,7 +12,7 @@ const runnerSchema = new mongoose.Schema({
         status: {
         type: String,
         enum: ["Scheduled", "Ongoing", "Completed"],
-        required: true,
+        required: true
     },
     employeeId: {
         type: mongoose.Schema.Types.ObjectId,
