@@ -7,7 +7,7 @@ const runnerSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: true,
+        required: true
     },
     employeeId: {
         type: mongoose.Schema.Types.ObjectId,
