@@ -140,6 +140,32 @@ const deleteVisit = async (id) => {
     }
 };
 
+// Service to filter visits by date range using startTime
+const getVisitsByDateRange = async (startDate, endDate) => {
+    try {
+        // Convert dates to proper Date objects
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+
+        const visits = await Visit.find({
+            startTime: {
+                $gte: start, // Greater than or equal to start date
+                $lte: end,   // Less than or equal to end date
+            },
+        })
+        .populate('clientId')
+        .populate('careProfessionalId');
+
+        return visits;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
+
+
+
+
 module.exports = {
     createVisit,
     getAllVisits,
@@ -151,4 +177,5 @@ module.exports = {
     getVisitsByEmployeeid,
     getAllVisitswithPagination,
     deleteVisit,
+    getVisitsByDateRange
 };

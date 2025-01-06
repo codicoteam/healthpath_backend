@@ -11,6 +11,7 @@ const visitSchema = new mongoose.Schema({
         ref: "Employee",
         required: true,
     },
+    
     location: {
         latitude: {
             type: Number,
@@ -24,8 +25,12 @@ const visitSchema = new mongoose.Schema({
             type: String,
             required: true
         }
-
     },
+    amount_paid_per_hour: {
+        type: String,
+        required: true,
+    },
+    
     DateOfVisit: {
         type: String,
         required: true,
@@ -41,6 +46,10 @@ const visitSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ["Scheduled", "Confirmed", "Ongoing", "Completed"],
+        required: true,
+    },
+    description: {
+        type: String,
         required: true,
     },
     officialVisitTime: {

@@ -211,4 +211,27 @@ router.delete('/delete/:id', authenticateToken, async (req, res) => {
     }
 });
 
+
+// Route to filter visits by date range
+router.get('/filterByDateRange', authenticateToken, async (req, res) => {
+    try {
+        const { startDate, endDate } = req.query;
+        if (!startDate || !endDate) {
+            return res.status(400).json({
+                message: 'Please provide both startDate and endDate as query parameters',
+            });
+        }
+        const visits = await visitService.getVisitsByDateRange(startDate, endDate);
+        res.status(200).json({
+            message: 'Visits retrieved successfully',
+            data: visits,
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error filtering visits by date range',
+            error: error.message,
+        });
+    }
+});
+
 module.exports = router;
