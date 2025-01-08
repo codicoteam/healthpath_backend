@@ -48,7 +48,7 @@ const ClientBookingSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['Pending', 'Visit Created', ],
+      enum: ['Pending', 'Visit Created', 'Cancelled'],
       default: 'Pending',
     },
     paymentStatus: {
