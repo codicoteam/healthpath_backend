@@ -164,6 +164,52 @@ const getVisitsByDateRange = async (startDate, endDate) => {
 
 
 
+const getVisitsByEmployeeIdAndDateRange = async (employeeId, startDate, endDate) => {
+    try {
+        // Convert dates to proper Date objects
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+
+        const visits = await Visit.find({
+            careProfessionalId: employeeId, // Filter by careProfessionalId (EmployeeId)
+            startTime: {
+                $gte: start, // Greater than or equal to start date
+                $lte: end,   // Less than or equal to end date
+            },
+        })
+        .populate('clientId')
+        .populate('careProfessionalId');
+
+        return visits;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
+// Service to filter visits by ClientId and DateRange
+const getVisitsByClientIdAndDateRange = async (clientId, startDate, endDate) => {
+    try {
+        // Convert dates to proper Date objects
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+
+        const visits = await Visit.find({
+            clientId: clientId, // Filter by clientId
+            startTime: {
+                $gte: start, // Greater than or equal to start date
+                $lte: end,   // Less than or equal to end date
+            },
+        })
+        .populate('clientId')
+        .populate('careProfessionalId');
+
+        return visits;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
+
 
 
 module.exports = {
@@ -177,5 +223,7 @@ module.exports = {
     getVisitsByEmployeeid,
     getAllVisitswithPagination,
     deleteVisit,
-    getVisitsByDateRange
+    getVisitsByDateRange,
+    getVisitsByClientIdAndDateRange,
+    getVisitsByEmployeeIdAndDateRange
 };
