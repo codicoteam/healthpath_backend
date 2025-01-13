@@ -234,4 +234,54 @@ router.get('/filterByDateRange', authenticateToken, async (req, res) => {
     }
 });
 
+
+
+// Route to filter visits by EmployeeId and DateRange
+router.get('/filterByEmployeeAndDateRange', authenticateToken, async (req, res) => {
+    try {
+        const { employeeId, startDate, endDate } = req.query;
+        if (!employeeId || !startDate || !endDate) {
+            return res.status(400).json({
+                message: 'Please provide employeeId, startDate, and endDate as query parameters',
+            });
+        }
+        const visits = await visitService.getVisitsByEmployeeIdAndDateRange(employeeId, startDate, endDate);
+        res.status(200).json({
+            message: 'Visits retrieved successfully',
+            data: visits,
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error filtering visits by employee and date range',
+            error: error.message,
+        });
+    }
+});
+
+// Route to filter visits by ClientId and DateRange
+router.get('/filterByClientAndDateRange', authenticateToken, async (req, res) => {
+    try {
+        const { clientId, startDate, endDate } = req.query;
+        if (!clientId || !startDate || !endDate) {
+            return res.status(400).json({
+                message: 'Please provide clientId, startDate, and endDate as query parameters',
+            });
+        }
+        const visits = await visitService.getVisitsByClientIdAndDateRange(clientId, startDate, endDate);
+        res.status(200).json({
+            message: 'Visits retrieved successfully',
+            data: visits,
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error filtering visits by client and date range',
+            error: error.message,
+        });
+    }
+});
+
+
+
+
+
 module.exports = router;
