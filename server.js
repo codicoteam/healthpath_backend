@@ -57,25 +57,33 @@ app.use("/api/v1/concern_route", concernRouter);
 app.use("/api/v1/booking_route", bookingRouter);
 
 // Group Chat APIs
-app.get("/api/v1/groups/:groupId/users", authenticateToken, async (req, res) => {
-  try {
-    const users = await groupChatService.getUsersInGroup(req.params.groupId);
-    res.json(users);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch users in the group" });
+app.get(
+  "/api/v1/groups/:groupId/users",
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const users = await groupChatService.getUsersInGroup(req.params.groupId);
+      res.json(users);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch users in the group" });
+    }
   }
-});
+);
 
-app.get("/api/v1/groups/:groupId/messages", authenticateToken, async (req, res) => {
-  try {
-    const messages = await groupChatService.getMessagesInGroup(
-      req.params.groupId
-    );
-    res.json(messages);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch messages" });
+app.get(
+  "/api/v1/groups/:groupId/messages",
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const messages = await groupChatService.getMessagesInGroup(
+        req.params.groupId
+      );
+      res.json(messages);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch messages" });
+    }
   }
-});
+);
 
 app.post("/api/v1/groups", authenticateToken, async (req, res) => {
   const { groupId } = req.body;
@@ -88,35 +96,61 @@ app.post("/api/v1/groups", authenticateToken, async (req, res) => {
 });
 
 app.post("/api/v1/users", authenticateToken, async (req, res) => {
-    const { email, first_name, last_name, profile_picture, role, userId, online, lastSeen } = req.body;
-  
-    try {
-      // Call saveUser from the service and pass the necessary parameters
-      const user = await groupChatService.saveUser(email, first_name, last_name, profile_picture, role, userId,online, lastSeen);
-  
-      // Respond with the created user
-      res.status(201).json({ message: "User registered", user });
-    } catch (error) {
-      // Handle the case where user already exists
-      if (error.message === 'User with this email already exists') {
-        return res.status(400).json({ error: 'User with this email already exists' });
-      }
-      
-      // Generic error response
-      res.status(500).json({ error: "Failed to register user" });
+  const {
+    email,
+    first_name,
+    last_name,
+    profile_picture,
+    role,
+    userId,
+    online,
+    lastSeen,
+  } = req.body;
+
+  try {
+    // Call saveUser from the service and pass the necessary parameters
+    const user = await groupChatService.saveUser(
+      email,
+      first_name,
+      last_name,
+      profile_picture,
+      role,
+      userId,
+      online,
+      lastSeen
+    );
+
+    // Respond with the created user
+    res.status(201).json({ message: "User registered", user });
+  } catch (error) {
+    // Handle the case where user already exists
+    if (error.message === "User with this email already exists") {
+      return res
+        .status(400)
+        .json({ error: "User with this email already exists" });
     }
-  });
+
+    // Generic error response
+    res.status(500).json({ error: "Failed to register user" });
+  }
+});
 
 // Socket.IO configuration
 io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
 
   socket.on("login", async (userId) => {
-    const user = await User.findById(userId);
-    if (user) {
-      user.online = true;
-      await user.save();
-      io.emit("updateUserStatus", { userId, online: true });
+    try {
+      const user = await groupChatService.getUserById(userId);
+      if (user) {
+        user.online = true;
+        await user.save();
+        io.emit("updateUserStatus", { userId, online: true });
+      } else {
+        console.log("User not found");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
     }
   });
 
@@ -128,11 +162,12 @@ io.on("connection", (socket) => {
     socket.emit("groupMessages", messages);
   });
 
-  socket.on("message", async ({ groupId, senderId, message }) => {
+  socket.on("message", async ({ groupId, senderId, message, images }) => {
     const newMessage = await groupChatService.saveMessage({
       groupId,
       senderId,
       message,
+      images,
     });
     io.to(groupId).emit("newMessage", newMessage);
   });
