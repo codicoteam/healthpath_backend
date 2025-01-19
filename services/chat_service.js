@@ -62,7 +62,7 @@ const saveUser = async (
   return user.save(); // Save the new user to the database
 };
 const getMessagesInGroup = async (groupId) => {
-  return Message.find({ groupId }).populate("sender", "username"); // Include sender details
+  return Message.find({ groupId }).populate("sender"); // Include sender details
 };
 
 async function updateUserStatus(socketId, online, lastSeen) {
