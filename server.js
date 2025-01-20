@@ -162,11 +162,12 @@ io.on("connection", (socket) => {
     socket.emit("groupMessages", messages);
   });
 
-  socket.on("message", async ({ groupId, senderId, message, images, first_name }) => {
+  socket.on("message", async ({ groupId, senderId, message, images, timestamp, first_name,  }) => {
     const newMessage = await groupChatService.saveMessage({
       groupId,
       senderId,
       message,
+      timestamp,
       first_name,
       images,
     });
