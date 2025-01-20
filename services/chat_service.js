@@ -16,10 +16,11 @@ const getUsersInGroup = async (groupId) => {
   return group ? group.users : [];
 };
 
-const saveMessage = async ({ groupId, senderId, images, message }) => {
+const saveMessage = async ({ groupId, senderId, images, message, first_name }) => {
   const newMessage = await Message.create({
     groupId,
     sender: senderId,
+    first_name,
     senderId,
     images,
     message,
