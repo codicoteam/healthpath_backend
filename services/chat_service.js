@@ -20,6 +20,7 @@ const saveMessage = async ({ groupId, senderId, images, message }) => {
   const newMessage = await Message.create({
     groupId,
     sender: senderId,
+    senderId,
     images,
     message,
   });
