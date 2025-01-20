@@ -167,6 +167,7 @@ io.on("connection", (socket) => {
       groupId,
       senderId,
       message,
+      first_name,
       images,
     });
     io.to(groupId).emit("newMessage", newMessage);
