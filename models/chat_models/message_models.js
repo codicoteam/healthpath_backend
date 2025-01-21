@@ -7,7 +7,7 @@ const messageSchema = new mongoose.Schema({
   first_name: { type: String, required: true },
   message: { type: String, required: true },
   timestamp: { type: Date, default: Date.now },
-  images: { type: [String], default: [] } // List of image locations (optional field)
+  images: { type: String, required: true } // List of image locations (optional field)
 });
 
 module.exports = mongoose.model('Message', messageSchema);
