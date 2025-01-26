@@ -33,7 +33,7 @@ console.log('Password Validity:', isPasswordValid);
             { expiresIn: '8h' }
         );
 
-        res.status(200).json({ message: 'Login successful', token });
+        res.status(200).json({ message: 'Login successful', data: client,token });
     } catch (error) {
         res.status(500).json({ message: 'Login failed', error: error.message });
     }
