@@ -60,4 +60,5 @@ module.exports = {
     createClient,
     getAllClients,
     getClientByEmail,
+    updateClientByEmail
 };
