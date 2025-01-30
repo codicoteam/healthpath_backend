@@ -37,6 +37,25 @@ const getClientByEmail = async (email) => {
     }
 };
 
+/ Service to find a client by email and update their details
+const updateClientByEmail = async (email, updateData) => {
+    try {
+        const updatedClient = await Client.findOneAndUpdate(
+            { email }, 
+            updateData, 
+            { new: true, runValidators: true } // Returns the updated document and applies validation
+        );
+        
+        if (!updatedClient) {
+            throw new Error('Client not found');
+        }
+
+        return updatedClient;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
 module.exports = {
     createClient,
     getAllClients,
