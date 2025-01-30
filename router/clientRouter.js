@@ -64,8 +64,6 @@ router.get('/getclient/:email', authenticateToken, async (req, res) => {
     }
 });
 
-
-
 // Route to update client by email
 router.put('/updateclient/:email', authenticateToken, async (req, res) => {
     try {
