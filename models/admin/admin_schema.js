@@ -37,4 +37,17 @@ adminSchema.pre("save", async function (next) {
     next();
 });
 
+// Hash password before updating a client
+adminSchema.pre("findOneAndUpdate", async function (next) {
+    const update = this.getUpdate();
+    
+    // Check if password is being updated
+    if (update.password) {
+        update.password = await bcrypt.hash(update.password, 10);
+    }
+    
+    next();
+});
+
+
 module.exports = mongoose.model("Admin", adminSchema);
