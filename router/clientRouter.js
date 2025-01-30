@@ -40,6 +40,31 @@ console.log('Password Validity:', isPasswordValid);
 });
 
 
+// Route to get client by email
+router.get('/getclient/:email', authenticateToken, async (req, res) => {
+    try {
+        const { email } = req.params;
+        
+        // Fetch client by email
+        const client = await clientService.getClientByEmail(email);
+        
+        if (!client) {
+            return res.status(404).json({ message: 'Client not found' });
+        }
+        
+        res.status(200).json({
+            message: 'Client retrieved successfully',
+            data: client,
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error retrieving client',
+            error: error.message,
+        });
+    }
+});
+
+
 
 // Route to handle client signup
 router.post('/signup', async (req, res) => {
