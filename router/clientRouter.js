@@ -63,7 +63,6 @@ router.get('/getclient/:email', authenticateToken, async (req, res) => {
         });
     }
 });
-
 // Route to update client by email
 router.put('/updateclient/:email', authenticateToken, async (req, res) => {
     try {
@@ -78,7 +77,6 @@ router.put('/updateclient/:email', authenticateToken, async (req, res) => {
         res.status(500).json({ message: 'Error updating client', error: error.message });
     }
 });
-
 
 // Route to handle client signup
 router.post('/signup', async (req, res) => {
