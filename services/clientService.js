@@ -37,7 +37,7 @@ const getClientByEmail = async (email) => {
     }
 };
 
-/ Service to find a client by email and update their details
+// Service to find a client by email and update their details
 const updateClientByEmail = async (email, updateData) => {
     try {
         const updatedClient = await Client.findOneAndUpdate(
