@@ -66,6 +66,22 @@ router.get('/getclient/:email', authenticateToken, async (req, res) => {
 
 
 
+// Route to update client by email
+router.put('/updateclient/:email', authenticateToken, async (req, res) => {
+    try {
+        const { email } = req.params;
+        const updatedData = req.body;
+        const updatedClient = await clientService.updateClientByEmail(email, updatedData);
+        if (!updatedClient) {
+            return res.status(404).json({ message: 'Client not found' });
+        }
+        res.status(200).json({ message: 'Client updated successfully', data: updatedClient });
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating client', error: error.message });
+    }
+});
+
+
 // Route to handle client signup
 router.post('/signup', async (req, res) => {
     try {
