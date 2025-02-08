@@ -28,7 +28,7 @@ console.log('Password Validity:', isPasswordValid);
 
         // Generate JWT token
         const token = jwt.sign(
-            { id: client._id, email: client.email },
+            { id: client._id, email: client.email, firstName: client.firstName, lastName: client.lastName },
             'codicoso2023', // Replace 'your_jwt_secret' with a secure key
             { expiresIn: '8h' }
         );
@@ -86,7 +86,7 @@ router.post('/signup', async (req, res) => {
 
         // Generate a token for the new client
         const token = jwt.sign(
-            { id: newClient._id, email: newClient.email }, 
+            { id: newClient._id, email: newClient.email, firstName: newClient.firstName, lastName: newClient.lastName },
             "codicoso2023", 
             { expiresIn: '8h' } // Token validity: 1 hour
         );
