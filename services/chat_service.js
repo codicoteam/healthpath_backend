@@ -12,14 +12,15 @@ const addUserToGroup = async (userId, groupId) => {
 };
 
 const getUsersInGroup = async (groupId) => {
-  const group = await Group.findOne({ groupId }).populate({
-    path: "users",
-    model: "User",
-    match: {}, // Ensures all users with matching userId are retrieved
-  });
+  const group = await Group.findOne({ groupId });
+  if (!group) return [];
 
-  return group ? group.users : [];
+  // Manually fetch user details based on userId list
+  const users = await User.find({ userId: { $in: group.users } });
+
+  return users;
 };
+
 
 const saveMessage = async ({ groupId, senderId, images, message, first_name }) => {
   const newMessage = await Message.create({
