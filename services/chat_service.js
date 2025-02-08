@@ -12,7 +12,12 @@ const addUserToGroup = async (userId, groupId) => {
 };
 
 const getUsersInGroup = async (groupId) => {
-  const group = await Group.findOne({ groupId }).populate("users");
+  const group = await Group.findOne({ groupId }).populate({
+    path: "users",
+    model: "User",
+    match: {}, // Ensures all users with matching userId are retrieved
+  });
+
   return group ? group.users : [];
 };
 
