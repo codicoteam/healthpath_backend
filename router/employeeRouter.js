@@ -24,7 +24,7 @@ router.post('/login', async (req, res) => {
 
         // Generate JWT token
         const token = jwt.sign(
-            { id: employee._id, email: employee.email },
+            { id: employee._id, email: employee.email, firstName: employee.firstName, lastName: employee.lastName },
             'codicoso2023', // Replace 'your_jwt_secret' with a secure key
             { expiresIn: '8h' }
         );
@@ -43,7 +43,7 @@ router.post('/signup', async (req, res) => {
 
         // Generate a token for the new employee
         const token = jwt.sign(
-            { id: newEmployee._id, email: newEmployee.email },
+            { id: employee._id, email: employee.email, firstName: employee.firstName, lastName: employee.lastName },
             'codicoso2023', // Replace with a secure key
             { expiresIn: '8h' } // Token validity: 1 hour
         );
