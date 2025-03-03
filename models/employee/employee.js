@@ -34,7 +34,7 @@ const employeeSchema = new mongoose.Schema({
 
     employmentType: {
         type: String,
-        enum: ["Full-time", "Part-time", "Contract"],
+        enum: ["FullTime", "PartTime", "Contract"],
         required: true,
     },
     workingHours: {
