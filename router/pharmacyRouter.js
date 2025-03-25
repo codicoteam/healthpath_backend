@@ -1,0 +1,58 @@
+const express = require("express");
+const router = express.Router();
+const pharmacyService = require("../services/pharmacyService");
+
+// Route to create a new pharmacy
+router.post("/", async (req, res) => {
+  try {
+    const newPharmacy = await pharmacyService.createPharmacy(req.body);
+    res.status(201).json(newPharmacy);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+// Route to get all pharmacies
+router.get("/", async (req, res) => {
+  try {
+    const pharmacies = await pharmacyService.getAllPharmacies();
+    res.status(200).json(pharmacies);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Route to get a pharmacy by ID
+router.get("/:id", async (req, res) => {
+  try {
+    const pharmacy = await pharmacyService.getPharmacyById(req.params.id);
+    res.status(200).json(pharmacy);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+});
+
+// Route to update a pharmacy by ID
+router.put("/:id", async (req, res) => {
+  try {
+    const updatedPharmacy = await pharmacyService.updatePharmacyById(
+      req.params.id,
+      req.body
+    );
+    res.status(200).json(updatedPharmacy);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+// Route to delete a pharmacy by ID
+router.delete("/:id", async (req, res) => {
+  try {
+    await pharmacyService.deletePharmacyById(req.params.id);
+    res.status(200).json({ message: "Pharmacy deleted successfully" });
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+});
+
+module.exports = router;

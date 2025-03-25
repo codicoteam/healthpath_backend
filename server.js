@@ -21,6 +21,8 @@ const runnerRouter = require("./router/runnnerRouter.js");
 const patientVitalsRouter = require("./router/patientVitalRouter.js");
 const concernRouter = require("./router/concernRoute.js");
 const bookingRouter = require("./router/bookingRoute.js");
+const pharmacyRoute = require("./router/pharmacyRouter.js");
+const medicineRoute = require("./router/pharmacyMedicineRoute.js");
 const groupChatService = require("./services/chat_service.js"); // Group Chat Service file
 
 // MongoDB connection
@@ -55,6 +57,9 @@ app.use("/api/v1/runner_route", runnerRouter);
 app.use("/api/v1/patient_vitals_route", patientVitalsRouter);
 app.use("/api/v1/concern_route", concernRouter);
 app.use("/api/v1/booking_route", bookingRouter);
+app.use("/api/v1/pharmacy_route", pharmacyRoute);
+app.use("/api/v1/medicine_route", medicineRoute);
+// console.log(app._router.stack.map((r) => (r.route ? r.route.path : r.name)));
 
 // Group Chat APIs
 app.get(
@@ -162,17 +167,20 @@ io.on("connection", (socket) => {
     socket.emit("groupMessages", messages);
   });
 
-  socket.on("message", async ({ groupId, senderId, message, images, timestamp, first_name,  }) => {
-    const newMessage = await groupChatService.saveMessage({
-      groupId,
-      senderId,
-      message,
-      timestamp,
-      first_name,
-      images,
-    });
-    io.to(groupId).emit("newMessage", newMessage);
-  });
+  socket.on(
+    "message",
+    async ({ groupId, senderId, message, images, timestamp, first_name }) => {
+      const newMessage = await groupChatService.saveMessage({
+        groupId,
+        senderId,
+        message,
+        timestamp,
+        first_name,
+        images,
+      });
+      io.to(groupId).emit("newMessage", newMessage);
+    }
+  );
 
   socket.on("typing", ({ groupId, senderId }) => {
     socket.to(groupId).emit("typing", senderId);
