@@ -23,6 +23,7 @@ const concernRouter = require("./router/concernRoute.js");
 const bookingRouter = require("./router/bookingRoute.js");
 const pharmacyRoute = require("./router/pharmacyRouter.js");
 const medicineRoute = require("./router/pharmacyMedicineRoute.js");
+const prescriptionRoute = require("./router/uploadprescriptionRouter");
 const groupChatService = require("./services/chat_service.js"); // Group Chat Service file
 
 // MongoDB connection
@@ -59,6 +60,7 @@ app.use("/api/v1/concern_route", concernRouter);
 app.use("/api/v1/booking_route", bookingRouter);
 app.use("/api/v1/pharmacy_route", pharmacyRoute);
 app.use("/api/v1/medicine_route", medicineRoute);
+app.use("/api/v1/prescription_route", prescriptionRoute);
 // console.log(app._router.stack.map((r) => (r.route ? r.route.path : r.name)));
 
 // Group Chat APIs

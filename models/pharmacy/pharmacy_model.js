@@ -28,7 +28,7 @@ const PharmacySchema = new mongoose.Schema({
   is24Hours: { type: Boolean, default: false }, // Whether the pharmacy operates 24/7
   licenseNumber: { type: String, required: true }, // Pharmacy license number
   owner: { type: String, required: true }, // Name of the owner or pharmacist in charge
-  medicines: [{ type: mongoose.Schema.Types.ObjectId, ref: "Medicine" }],
+
   medicalAids: [{ type: String }], // List of accepted medical aid providers
 });
 

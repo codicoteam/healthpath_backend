@@ -29,10 +29,34 @@ const getAllPharmacies = async () => {
   }
 };
 
+const getAllPharmacieswithpagination = async (page = 1, limit = 10) => {
+  try {
+    // Convert page and limit to integers, and set defaults if not provided
+    const skip = (page - 1) * limit;
+
+    const pharmacies = await Pharmacy.find()
+      .skip(skip) // Skip documents based on page
+      .limit(limit) // Limit the number of documents per page
+      .exec();
+
+    // Get total count of pharmacies for pagination info
+    const totalCount = await Pharmacy.countDocuments();
+
+    return {
+      pharmacies,
+      totalCount,
+      totalPages: Math.ceil(totalCount / limit), // Calculate total pages
+      currentPage: page,
+    };
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
 // Service to get a pharmacy by ID
 const getPharmacyById = async (pharmacyId) => {
   try {
-    const pharmacy = await Pharmacy.findById(pharmacyId).populate("medicines");
+    const pharmacy = await Pharmacy.findById(pharmacyId);
     if (!pharmacy) {
       throw new Error("Pharmacy not found");
     }
@@ -83,4 +107,5 @@ module.exports = {
   getPharmacyById,
   updatePharmacyById,
   deletePharmacyById,
+  getAllPharmacieswithpagination,
 };

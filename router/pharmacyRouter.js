@@ -22,6 +22,26 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/pagination", async (req, res) => {
+  try {
+    // Get pagination parameters from query string, defaulting to page 1 and limit 10
+    const { page = 1, limit = 10 } = req.query;
+    const pharmaciesData = await pharmacyService.getAllPharmacieswithpagination(
+      Number(page),
+      Number(limit)
+    );
+
+    res.status(200).json({
+      pharmacies: pharmaciesData.pharmacies,
+      totalCount: pharmaciesData.totalCount,
+      totalPages: pharmaciesData.totalPages,
+      currentPage: pharmaciesData.currentPage,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Route to get a pharmacy by ID
 router.get("/:id", async (req, res) => {
   try {

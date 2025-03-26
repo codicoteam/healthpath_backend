@@ -21,6 +21,31 @@ const getAllMedicines = async () => {
   }
 };
 
+const getAllMedicineswithpagiation = async (page = 1, limit = 10) => {
+  try {
+    // Convert page and limit to integers, and set defaults if not provided
+    const skip = (page - 1) * limit;
+
+    const medicines = await Medicine.find()
+      .populate("pharmacy")
+      .skip(skip) // Skip documents based on the page number
+      .limit(limit) // Limit the number of documents per page
+      .exec();
+
+    // Get total count of medicines for pagination info
+    const totalCount = await Medicine.countDocuments();
+
+    return {
+      medicines,
+      totalCount,
+      totalPages: Math.ceil(totalCount / limit), // Calculate total pages
+      currentPage: page,
+    };
+  } catch (error) {
+    throw new Error("Error fetching medicines: " + error.message);
+  }
+};
+
 // Get a single medicine by its ID
 const getMedicineById = async (medicineId) => {
   try {
@@ -44,6 +69,41 @@ const getMedicinesByPharmacyId = async (pharmacyId) => {
       throw new Error("No medicines found for this pharmacy");
     }
     return medicines;
+  } catch (error) {
+    throw new Error(
+      "Error fetching medicines by pharmacy ID: " + error.message
+    );
+  }
+};
+
+const getMedicinesByPharmacyIdwithpagination = async (
+  pharmacyId,
+  page = 1,
+  limit = 10
+) => {
+  try {
+    // Convert page and limit to integers, and set defaults if not provided
+    const skip = (page - 1) * limit;
+
+    const medicines = await Medicine.find({ pharmacy: pharmacyId })
+      .populate("pharmacy")
+      .skip(skip) // Skip documents based on page number
+      .limit(limit) // Limit the number of documents per page
+      .exec();
+
+    // Get total count of medicines for pagination info
+    const totalCount = await Medicine.countDocuments({ pharmacy: pharmacyId });
+
+    if (medicines.length === 0) {
+      throw new Error("No medicines found for this pharmacy");
+    }
+
+    return {
+      medicines,
+      totalCount,
+      totalPages: Math.ceil(totalCount / limit), // Calculate total pages
+      currentPage: page,
+    };
   } catch (error) {
     throw new Error(
       "Error fetching medicines by pharmacy ID: " + error.message
@@ -97,4 +157,6 @@ module.exports = {
   updateMedicine,
   deleteMedicine,
   searchMedicines,
+  getAllMedicineswithpagiation,
+  getMedicinesByPharmacyIdwithpagination,
 };

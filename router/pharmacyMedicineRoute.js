@@ -22,6 +22,26 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/pagination", async (req, res) => {
+  try {
+    // Get pagination parameters from query string, defaulting to page 1 and limit 10
+    const { page = 1, limit = 10 } = req.query;
+    const medicinesData = await medicineService.getAllMedicineswithpagiation(
+      Number(page),
+      Number(limit)
+    );
+
+    res.status(200).json({
+      medicines: medicinesData.medicines,
+      totalCount: medicinesData.totalCount,
+      totalPages: medicinesData.totalPages,
+      currentPage: medicinesData.currentPage,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Route to get a medicine by its ID
 router.get("/:id", async (req, res) => {
   try {
@@ -39,6 +59,29 @@ router.get("/pharmacy/:pharmacyId", async (req, res) => {
       req.params.pharmacyId
     );
     res.status(200).json(medicines);
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+});
+
+// Get all medicines by pharmacyId with pagination
+router.get("/pharmacy/:pharmacyId", async (req, res) => {
+  try {
+    // Get pagination parameters from query string, defaulting to page 1 and limit 10
+    const { page = 1, limit = 10 } = req.query;
+    const medicinesData =
+      await medicineService.getMedicinesByPharmacyIdwithpagination(
+        req.params.pharmacyId,
+        Number(page),
+        Number(limit)
+      );
+
+    res.status(200).json({
+      medicines: medicinesData.medicines,
+      totalCount: medicinesData.totalCount,
+      totalPages: medicinesData.totalPages,
+      currentPage: medicinesData.currentPage,
+    });
   } catch (error) {
     res.status(404).json({ error: error.message });
   }
