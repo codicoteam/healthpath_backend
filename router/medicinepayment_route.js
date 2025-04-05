@@ -114,17 +114,17 @@ const processMobilePayment = async (req, res, method) => {
   }
 };
 
-router.post("/mobile-ecocash-paynow-me", (req, res) =>
+router.post("/mobile-ecocash-paynow-me", authenticateToken, (req, res) =>
   processMobilePayment(req, res, "ecocash")
 );
-router.post("/mobile-netone-paynow-me", (req, res) =>
+router.post("/mobile-netone-paynow-me", authenticateToken, (req, res) =>
   processMobilePayment(req, res, Paynow.Methods.ONEMONEY)
 );
-router.post("/mobile-telone-paynow-me", (req, res) =>
+router.post("/mobile-telone-paynow-me", authenticateToken, (req, res) =>
   processMobilePayment(req, res, Paynow.Methods.TELECASH)
 );
 
-router.post("/check-status", async (req, res) => {
+router.post("/check-status", authenticateToken, async (req, res) => {
   try {
     const { pollUrl } = req.body;
     const status = await paynow.pollTransaction(pollUrl);
@@ -162,24 +162,28 @@ router.post("/check-status", async (req, res) => {
   }
 });
 
-router.get("/medical-receipts/:customerEmail", async (req, res) => {
-  try {
-    const { customerEmail } = req.params;
-    const receipts = await MedicalReceipt.find({ customerEmail });
+router.get(
+  "/medical-receipts/:customerEmail",
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const { customerEmail } = req.params;
+      const receipts = await MedicalReceipt.find({ customerEmail });
 
-    if (receipts.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No payment history found for this user." });
+      if (receipts.length === 0) {
+        return res
+          .status(404)
+          .json({ message: "No payment history found for this user." });
+      }
+
+      res.status(200).json(receipts);
+    } catch (error) {
+      res.status(500).json({
+        error: "An error occurred while retrieving payment history.",
+        details: error.message,
+      });
     }
-
-    res.status(200).json(receipts);
-  } catch (error) {
-    res.status(500).json({
-      error: "An error occurred while retrieving payment history.",
-      details: error.message,
-    });
   }
-});
+);
 
 module.exports = router;

@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const pharmacyService = require("../services/pharmacyService");
+const { authenticateToken } = require("../middleware/auth");
 
 // Route to create a new pharmacy
-router.post("/", async (req, res) => {
+router.post("/create_pharmacy", authenticateToken, async (req, res) => {
   try {
     const newPharmacy = await pharmacyService.createPharmacy(req.body);
     res.status(201).json(newPharmacy);
@@ -13,7 +14,7 @@ router.post("/", async (req, res) => {
 });
 
 // Route to get all pharmacies
-router.get("/", async (req, res) => {
+router.get("/get_all_pharmacies", authenticateToken, async (req, res) => {
   try {
     const pharmacies = await pharmacyService.getAllPharmacies();
     res.status(200).json(pharmacies);
@@ -22,9 +23,9 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/pagination", async (req, res) => {
+// Route to get pharmacies with pagination
+router.get("/get_paginated_pharmacies", authenticateToken, async (req, res) => {
   try {
-    // Get pagination parameters from query string, defaulting to page 1 and limit 10
     const { page = 1, limit = 10 } = req.query;
     const pharmaciesData = await pharmacyService.getAllPharmacieswithpagination(
       Number(page),
@@ -43,7 +44,7 @@ router.get("/pagination", async (req, res) => {
 });
 
 // Route to get a pharmacy by ID
-router.get("/:id", async (req, res) => {
+router.get("/get_pharmacy/:id", authenticateToken, async (req, res) => {
   try {
     const pharmacy = await pharmacyService.getPharmacyById(req.params.id);
     res.status(200).json(pharmacy);
@@ -53,7 +54,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // Route to update a pharmacy by ID
-router.put("/:id", async (req, res) => {
+router.put("/update_pharmacy/:id", authenticateToken, async (req, res) => {
   try {
     const updatedPharmacy = await pharmacyService.updatePharmacyById(
       req.params.id,
@@ -66,7 +67,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // Route to delete a pharmacy by ID
-router.delete("/:id", async (req, res) => {
+router.delete("/delete_pharmacy/:id", authenticateToken, async (req, res) => {
   try {
     await pharmacyService.deletePharmacyById(req.params.id);
     res.status(200).json({ message: "Pharmacy deleted successfully" });

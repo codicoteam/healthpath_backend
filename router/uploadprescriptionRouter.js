@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const UploadPrescriptionService = require("../services/upload_prescriptionService");
+const { authenticateToken } = require('../middleware/auth');
 
 // Create a new prescription upload
-router.post("/", async (req, res) => {
+router.post("/create_prescription", authenticateToken, async (req, res) => {
   try {
     const { clientId, medicineId, imagePrescription } = req.body;
     const prescription = await UploadPrescriptionService.createPrescription(
@@ -18,7 +19,7 @@ router.post("/", async (req, res) => {
 });
 
 // Get all prescriptions
-router.get("/", async (req, res) => {
+router.get("/get_all_prescriptions", authenticateToken, async (req, res) => {
   try {
     const prescriptions = await UploadPrescriptionService.getAllPrescriptions();
     res.json(prescriptions);
@@ -28,7 +29,7 @@ router.get("/", async (req, res) => {
 });
 
 // Get a single prescription by ID
-router.get("/:id", async (req, res) => {
+router.get("/get_prescription/:id", authenticateToken, async (req, res) => {
   try {
     const prescription = await UploadPrescriptionService.getPrescriptionById(
       req.params.id
@@ -43,16 +44,13 @@ router.get("/:id", async (req, res) => {
 });
 
 // Get all prescriptions by client ID
-router.get("/client/:clientId", async (req, res) => {
+router.get("/get_prescriptions_by_client/:clientId", authenticateToken, async (req, res) => {
   try {
-    const prescriptions =
-      await UploadPrescriptionService.getAllPrescriptionsByClientId(
-        req.params.clientId
-      );
+    const prescriptions = await UploadPrescriptionService.getAllPrescriptionsByClientId(
+      req.params.clientId
+    );
     if (!prescriptions.length) {
-      return res
-        .status(404)
-        .json({ message: "No prescriptions found for this client" });
+      return res.status(404).json({ message: "No prescriptions found for this client" });
     }
     res.json(prescriptions);
   } catch (error) {
@@ -61,13 +59,12 @@ router.get("/client/:clientId", async (req, res) => {
 });
 
 // Update prescription by ID
-router.put("/:id", async (req, res) => {
+router.put("/update_prescription/:id", authenticateToken, async (req, res) => {
   try {
-    const updatedPrescription =
-      await UploadPrescriptionService.updatePrescription(
-        req.params.id,
-        req.body
-      );
+    const updatedPrescription = await UploadPrescriptionService.updatePrescription(
+      req.params.id,
+      req.body
+    );
     if (!updatedPrescription) {
       return res.status(404).json({ message: "Prescription not found" });
     }
@@ -78,10 +75,9 @@ router.put("/:id", async (req, res) => {
 });
 
 // Delete prescription by ID
-router.delete("/:id", async (req, res) => {
+router.delete("/delete_prescription/:id", authenticateToken, async (req, res) => {
   try {
-    const deletedPrescription =
-      await UploadPrescriptionService.deletePrescription(req.params.id);
+    const deletedPrescription = await UploadPrescriptionService.deletePrescription(req.params.id);
     if (!deletedPrescription) {
       return res.status(404).json({ message: "Prescription not found" });
     }
