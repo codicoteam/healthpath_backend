@@ -3,7 +3,7 @@ const router = express.Router();
 const pharmacyService = require("../services/pharmacyService");
 
 // Route to create a new pharmacy
-router.post("/", async (req, res) => {
+router.post("/create_pharmacies", async (req, res) => {
   try {
     const newPharmacy = await pharmacyService.createPharmacy(req.body);
     res.status(201).json(newPharmacy);
@@ -13,7 +13,7 @@ router.post("/", async (req, res) => {
 });
 
 // Route to get all pharmacies
-router.get("/", async (req, res) => {
+router.get("/get_all_pharmacies", async (req, res) => {
   try {
     const pharmacies = await pharmacyService.getAllPharmacies();
     res.status(200).json(pharmacies);
@@ -43,7 +43,7 @@ router.get("/pagination", async (req, res) => {
 });
 
 // Route to get a pharmacy by ID
-router.get("/:id", async (req, res) => {
+router.get("/get_pharmacy_by:id", async (req, res) => {
   try {
     const pharmacy = await pharmacyService.getPharmacyById(req.params.id);
     res.status(200).json(pharmacy);
@@ -53,7 +53,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // Route to update a pharmacy by ID
-router.put("/:id", async (req, res) => {
+router.put("/update_pharmacy:id", async (req, res) => {
   try {
     const updatedPharmacy = await pharmacyService.updatePharmacyById(
       req.params.id,
