@@ -62,13 +62,12 @@ const getMedicineById = async (medicineId) => {
 // Get medicines by pharmacy ID
 const getMedicinesByPharmacyId = async (pharmacyId) => {
   try {
-    console.log("Looking for medicines with pharmacy ID:", pharmacyId);
-
     const medicines = await Medicine.find({ pharmacy: pharmacyId }).populate(
       "pharmacy"
     );
-
-    // ✅ Return empty array instead of throwing
+    if (!medicines || medicines.length === 0) {
+      throw new Error("No medicines found for this pharmacy");
+    }
     return medicines;
   } catch (error) {
     throw new Error(
