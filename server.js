@@ -24,8 +24,8 @@ const bookingRouter = require("./router/bookingRoute.js");
 const pharmacyRoute = require("./router/pharmacyRouter.js");
 const medicineRoute = require("./router/pharmacyMedicineRoute.js");
 const prescriptionRoute = require("./router/uploadprescriptionRouter");
-
 const medicinePaymentRoute = require("./router/medicinepayment_route");
+const doctorAppointmentRoute = require("./router/doctorAppointmentRoute.js")
 
 const groupChatService = require("./services/chat_service.js"); // Group Chat Service file
 
@@ -65,6 +65,7 @@ app.use("/api/v1/pharmacy_route", pharmacyRoute);
 app.use("/api/v1/medicine_route", medicineRoute);
 app.use("/api/v1/prescription_route", prescriptionRoute);
 app.use("/api/v1/medicinepayment_route", medicinePaymentRoute);
+app.use("/api/v1/doctorAppointmentRoute",doctorAppointmentRoute) // registered the doctor appointment 
 
 // console.log(app._router.stack.map((r) => (r.route ? r.route.path : r.name)));
 
