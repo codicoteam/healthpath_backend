@@ -6,7 +6,6 @@ const { body } = require('express-validator');
 
 // Validation middleware for creating/updating appointments
 const validateAppointment = [
-  body('clientId').isMongoId().withMessage('Invalid client ID'),
   body('FullName').notEmpty().trim().withMessage('Full name is required'),
   body('PhoneNumber').notEmpty().withMessage('Phone number is required'),
   body('Gender').isIn(['Male', 'Female', 'Other']).withMessage('Invalid gender'),
