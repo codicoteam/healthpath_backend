@@ -2,11 +2,7 @@ const mongoose = require('mongoose');
 
 const DoctorAppointmentSchema = new mongoose.Schema(
     {
-        clientId: {
-              type: mongoose.Schema.Types.ObjectId,
-              default: () => new mongoose.Types.ObjectId(),
-              required: true,
-            },
+
             FullName: {
               type: String,
               required: true,
