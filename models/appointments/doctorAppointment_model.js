@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { parsePhoneNumberWithError } = require('libphonenumber-js');
 
 const DoctorAppointmentSchema = new mongoose.Schema(
     {
@@ -15,17 +14,6 @@ const DoctorAppointmentSchema = new mongoose.Schema(
             PhoneNumber: {
                 type: String,
                 required: true,
-                validate: {
-                  validator: function(v) {
-                    try {
-                      const phoneNumber = parsePhoneNumberWithError(v);
-                      return phoneNumber.isValid();
-                    } catch (error) {
-                      return false;
-                    }
-                  },
-                  message: props => `${props.value} is not a valid international phone number with country code`
-                }
               },
             emailAddress: {
               type: String,
